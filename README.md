@@ -1,0 +1,2 @@
+# Codeup Database Exercises
+SQL
