@@ -1,5 +1,9 @@
 -- USE albums_db;
 
+USE albums_db;
+
+-- Explore th structure of the albums table
+
 SELECT * 
 FROM albums;
 
@@ -50,28 +54,37 @@ WHERE name = 'Nevermind';
 SELECT
 	name
 FROM albums
-WHERE release_date >= 1990 < 2000;
+WHERE release_date between 1990 and 1999;
 
 -- Which albums had less than 20 million certified sales?
 
 SELECT
 	name
 FROM albums
-WHERE sales > 20;
+WHERE sales < 20;
 
 -- All the albums with a genre of "Rock". Why do these query results not include albums with a genre of "Hard rock" or "Progressive rock"?
 
-SELECT *
+SELECT
+	name
 FROM albums
 WHERE genre = 'Rock';
 
 -- Album genre Hard Rock
-SELECT *
+SELECT 
+	name
 FROM albums
 WHERE genre = 'Hard Rock';
 
 -- Album genre Progressive Rock
-SELECT *
+SELECT
+	name
 FROM albums
 WHERE genre = 'Progressive Rock';
+
+-- Answer 
+SELECT
+	name
+FROM albums
+WHERE genre like '%rock%';
 	
