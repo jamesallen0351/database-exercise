@@ -19,6 +19,23 @@ SELECT emp_no, dept_no, from_date, to_date,
 
 describe current_dept_emp; -- looking at the fields in current_dept_emp
 
+-- # Codeup solution
+SELECT 
+	de.emp_no,
+	dept_no,
+	hire_date,
+	to_date,
+	IF(to_date > CURDATE(), 1, 0) AS current_employee
+FROM dept_emp AS de
+JOIN (SELECT 
+			emp_no,
+			MAX(to_date) AS max_date
+		FROM dept_emp
+		GROUP BY emp_no) as last_dept 
+		ON de.emp_no = last_dept.emp_no
+			AND de.to_date = last_dept.max_date
+JOIN employees AS e ON e.emp_no = de.emp_no;
+
 
 -- 2 Write a query that returns all employee names (previous and current), and a new column 'alpha_group' that returns 'A-H', 'I-Q', or 'R-Z' depending on the first letter of their last name.
 
@@ -31,7 +48,16 @@ select last_name, first_name,
 		end as alpha_group
 from employees;  -- I did last_name, first_name because I can and it relates to the alpha_group
 
+-- # Codeup solution
 
+SELECT
+	CONCAT(first_name, ' ', last_name) AS employee_name,
+	CASE
+		WHEN LEFT(last_name, 1) IN('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h') THEN 'A-H'
+		WHEN LEFT(last_name, 1) IN('i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q') THEN 'I-Q'
+		ELSE 'R-Z'
+	END AS alpha_group
+FROM employees;
 
 
 -- 3 How many employees (current or previous) were born in each decade?
@@ -71,6 +97,18 @@ order by birth_date desc; -- checking to see range of birthdates asc / desc ; on
 select concat(substring(birth_date,1,3), "0's") as year, count(*) as count
 from employees
 group by year; -- simple solution produced by the group
+
+-- # Codeup solution
+
+SELECT
+	CASE
+		WHEN birth_date LIKE '195%' THEN '50s'
+		WHEN birth_date LIKE '196%' THEN '60s'
+		ELSE 'YOUNG'
+	END AS decade,
+	COUNT(*)
+FROM employees
+GROUP BY decade;
 
 -- # Bonus
 
