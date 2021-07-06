@@ -8,7 +8,9 @@ create temporary table  employees_with_departments as
 select first_name, last_name, dept_name
 from employees.employees
 join employees.dept_emp using(emp_no) 
-join employees.departments using(dept_no);
+join employees.departments using(dept_no)
+where to_date >now();
+
 
 select *
 from employees_with_departments;
@@ -42,6 +44,8 @@ from employees_with_departments;
 -- 1d What is another way you could have ended up with this same table?
 use germain_1472;
 
+drop table with 
+
 create temporary table  employees_with_departments_1 as
 select concat(first_name," ", last_name) as full_name, dept_name
 from employees.employees
@@ -65,8 +69,17 @@ from sakila.payment;
 select *
 from payment_amount;
 
-alter table payment_amount cast(amount as integer);
+alter table payment_amount modify column amount decimal (10,2);
 
+-- select cast(amount as INT);
+
+update payment_amount set amount = amount * 100;
+
+select floor(amount) as cents from payment_amount;
+
+select * from payment_amount;
+
+drop table payment_amount;
 
 
 
@@ -78,6 +91,9 @@ alter table payment_amount cast(amount as integer);
 use germain_1472;
 
 select database();
+
+select avg(salary), std(salary)
+from employees.salaries;
 
 create temporary table compare_salaries as
 select salaries.salary, departments.dept_name
